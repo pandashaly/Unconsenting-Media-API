@@ -1,7 +1,6 @@
 import pandas as pd
 
-def UM_ratings(csv_path):
-	flag_scores = {
+flag_scores = {
 		"noRape": 0,
 		"sexHarOnScrn": 1,
 		"sexAdultTeen": 1,
@@ -13,27 +12,20 @@ def UM_ratings(csv_path):
 		"rapeOnScreen": 4
 	}
 
-	df = pd.read_csv(csv_path)
-	df = df[df["itemType"].isin(["movie", "TV Show"])].copy()
+def rate_warnings(row):
+	warnings = []
+	score = 0
 
-	def weigh_warnings(row):
-		warnings = []
-		score = 0
+	for col, weight in flag_scores.items():
+		if str(row.get(col)).strip().upper() == "TRUE":
+			warnings.append(col)
+			score += weight
 
-		for col, weight in flag_scores.items():
-			if str(row.get(col)).strip().upper() == "TRUE":
-				warnings.append(col)
-				score += weight
-
-		if score >= 4:
-			rating = "🔴"
-		elif score >= 1:
-			rating = "🟠"
-		else:
-			rating = "🟢"
+	if score >= 4:
+		rating = "🔴"
+	elif score >= 1:
+		rating = "🟠"
+	else:
+		rating = "🟢"
 		
-		return warnings, rating
-	
-	df["warnings"], df["safetyRating"] = zip(*df.apply(weigh_warnings, axis=1))
-
-	return df
+	return warnings, rating
