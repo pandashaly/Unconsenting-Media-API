@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Environments
+venv/
+.env
+
+# Data
+data/
+*.csv
+
+# macOS system files
+.DS_Store
+
+# Logs
+*.log
+
+# VSCode settings (optional)
+.vscode/
+
+# Extras
+*.yml
+testing.py
+bar.py
